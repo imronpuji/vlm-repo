@@ -13,3 +13,4 @@ RUN python3 -c "from huggingface_hub import snapshot_download; snapshot_download
 COPY handler.py /handler.py
 ENTRYPOINT []
 CMD ["python3", "-u", "/handler.py"]
+# rebuild
