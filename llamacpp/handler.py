@@ -45,10 +45,13 @@ def handler(job):
     try:
         out = r.json()
     except Exception:
-        return {"error": r.text[:500]}
+        yield {"error": r.text[:500]}
+        return
     if r.status_code != 200:
-        return {"error": out}
-    return out
+        yield {"error": out}
+        return
+    # Rute /openai/v1 Runpod mengharapkan handler berbentuk generator (seperti worker-vllm)
+    yield out
 
 
-runpod.serverless.start({"handler": handler})
+runpod.serverless.start({"handler": handler, "return_aggregate_stream": True})
