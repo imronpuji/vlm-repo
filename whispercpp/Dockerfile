@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends git cmake build
 RUN git clone --depth 1 https://github.com/ggml-org/whisper.cpp /src
 WORKDIR /src
 # A4000/A4500/A5000 = sm_86, RTX 4090/L4 = sm_89; statis supaya tidak perlu menyalin library
-RUN cmake -B build -DGGML_CUDA=1 -DCMAKE_CUDA_ARCHITECTURES="86;89" -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release \
+RUN cmake -B build -DGGML_CUDA=1 -DCMAKE_CUDA_ARCHITECTURES="86;89" -DBUILD_SHARED_LIBS=OFF -DGGML_NATIVE=OFF -DGGML_AVX2=ON -DGGML_FMA=ON -DGGML_F16C=ON -DCMAKE_BUILD_TYPE=Release \
  && cmake --build build -j"$(nproc)" --target whisper-server
 
 FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04
